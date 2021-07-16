@@ -5,26 +5,34 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import utility.Log;
+import ObjectRepository.ReadDataConfig;
 
 import java.util.concurrent.TimeUnit;
 
 public class BaseClass{
 
-    public  static WebDriver driver;
+    public static WebDriver driver;
 
     @BeforeTest
-    public void setUp() {
+    public void setUp () {
 
-        WebDriverManager.chromedriver().setup();
+        Log.info ("Start chrome browser");
+        WebDriverManager.chromedriver ().setup ();
         driver = new ChromeDriver ();
 
-        driver.get("https://www.udemy.com/");
-        driver.manage().window().maximize();
-        driver.manage ().timeouts ().implicitlyWait (15, TimeUnit.SECONDS);
+        Log.info ("getting url path from config.properties");
+        String url = ReadDataConfig.getProperty (ReadDataConfig.CONFIG_PATH, "url");
+
+        Log.info ("getting url path from config.properties");
+        driver.get (url);
+        driver.manage ().window ().maximize ();
+        driver.manage ().timeouts ().implicitlyWait (20, TimeUnit.SECONDS);
     }
 
     @AfterTest
-    public void tearDown() {
-        driver.close();
+    public void tearDown () {
+        Log.info ("close the browser");
+        driver.close ();
     }
 }
